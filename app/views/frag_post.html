@@ -1,0 +1,15 @@
+<div class="image">
+  <img src="http://lorempixel.com/200/200/cats/">
+</div>
+<div class="meta">
+  <span class="subject" ng-bind="post.subject"></span>
+  <span class="nameBlock" ng-bind="post.user"></span>
+  <!--<span class="capcode" ng-bind="post.capcode != null ? (' ## ' + post.capcode) : '' " ></span>-->
+  <span class="dateTime" data-utc="{{post.timestamp}}">{{post.timestamp*1000 | date:'MM\/dd\/yy(EEE)HH:MM:ss'}}</span>
+        <span class="postNum">
+          <a title="Link to this post" href="/{{board}}/thread/{{thread.posts[0].postnumber}}#p{{post.postnumber}}">No.</a>
+          <a title="Reply to this post" href="/{{board}}/{{thread.posts[0].postnumber}}#p{{post.postnumber}}">{{post.postnumber}}</a>
+        </span>
+  <span ng-if="post.isop && isBoardView">[<a class="replylink" href="/{{board}}/thread/{{thread.posts[0].postnumber}}">Reply</a>]</span>
+</div>
+<div class="post-text"><blockquote ng-bind-html="post.comment"></blockquote></div>

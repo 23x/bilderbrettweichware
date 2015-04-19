@@ -1,0 +1,8 @@
+<div ng-include="'views/frag_newpost.html'"></div>
+<div class="thread-container">
+  <div class="thread">
+    <div class="post" ng-repeat="post in data.posts  | orderBy:'postnumber':false">
+      <div ng-include="'views/frag_post.html'"></div>
+    </div>
+  </div>
+</div>

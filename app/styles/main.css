@@ -1,0 +1,95 @@
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+  color:#800000;
+  font-family: sans-serif;
+  font-size: 10pt;
+  width: 100%;
+}
+
+.image {
+  display: inline;
+  float:left;
+  margin: 10px;
+}
+
+.meta > .subject, .meta > .nameBlock, .meta > .capcode {
+  font-weight: bold;
+}
+
+.nameBlock {
+  color: #117743
+}
+
+.meta{
+  display: inline-block;
+  text-wrap: none;
+  padding: 5px;
+}
+
+.thread > .post:nth-child(1){
+  background-color: inherit;
+  display:block;
+}
+
+.post {
+  margin: 5px;
+  background-color: #f0e0d6;
+  display:table;
+
+}
+
+.post-text > blockquote {
+  margin-top:0;
+}
+
+.thread-container, .thread {
+  width:100%;
+}
+
+.postNum > a {
+  text-decoration: none;
+  color: #800000;
+}
+
+.subject{
+  color: red;
+}
+
+.center-div {
+  margin: 0 auto;
+}
+
+.newpost th {
+  background-color: #ea8;
+  border: 1px solid #800;
+}
+
+hr{
+  clear:both;
+  height: 0;
+  border-style: solid none none;
+  border-with: 1px medium medium;
+}
+
+
+.hidden {
+  display: none;
+}
+
+.fileupload {
+  height: 40px;
+  line-height: 40px;
+  border: 1px dashed #800;
+  text-align:center;
+}
+
+.thumb, .thumb canvas {
+  display:inline
+}

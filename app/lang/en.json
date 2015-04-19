@@ -1,0 +1,16 @@
+{
+   "newpost.subject": "Subject"
+  ,"newpost.mail": "Mail"
+  ,"newpost.comment": "Comment"
+  ,"newpost.file": "Image"
+  ,"newpost.password": "Password"
+  ,"newpost.submit": "Submit"
+  ,"newpost.name": "Name"
+  ,"newpost.fileupload": "Drag file here, or click to select"
+
+
+
+
+  ,"api.board.create.invalidurl": "Invalid board URL, only a-z and 0-9 allowed."
+  ,"api.board.create.alreadyexists": "Board URL already exists."
+}
