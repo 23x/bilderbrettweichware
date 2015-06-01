@@ -1,5 +1,5 @@
-<div class="image">
-  <img src="http://lorempixel.com/200/200/cats/">
+<div class="image" ng-repeat="file in post.files">
+  <img ng-src="/images/{{file.path}}">
 </div>
 <div class="meta">
   <span class="subject" ng-bind="post.subject"></span>
@@ -13,3 +13,4 @@
   <span ng-if="post.isop && isBoardView">[<a class="replylink" href="/{{board}}/thread/{{thread.posts[0].postnumber}}">Reply</a>]</span>
 </div>
 <div class="post-text"><blockquote ng-bind-html="post.comment"></blockquote></div>
+

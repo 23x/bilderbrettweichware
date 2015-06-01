@@ -21,10 +21,14 @@
         <tr>
           <th>{{'newpost.file' | translate}}</th>
           <td>
-            <input class="hidden" id="newpost-file-upload" type="file" nv-file-select uploader="uploader" />
-            <div onclick="jQuery('#newpost-file-upload').click();" class="fileupload" nv-file-drop uploader="uploader">{{'newpost.fileupload' | translate}}</div>
-            <div class="thumb" ng-repeat="item in uploader.queue">
-              <div class="thumb" ng-thumb="{ file: item._file, height: 100 }"></div>
+            <input class="hidden" id="newpost-file-upload" type="file"
+                   ng-file-select ng-model="file" ng-file-change="fileSelected($files, $event)" />
+            <div onclick="jQuery('#newpost-file-upload').click();" class="fileupload"
+                 ng-file-drop ng-model="file" ng-multiple="true" accept=".jpg,.png,.gif"
+                 ng-file-change="filesDropped($files, $event, $rejectedFiles)">{{'newpost.fileupload' | translate}}</div>
+            <div class="thumb" ng-repeat="item in files">
+              <div class="thumb" ng-thumb="{ file: item, height: 100 }"></div><br />
+              <div class="thumb" ng-bind="item.name"></div>
             </div>
           </td>
         </tr>

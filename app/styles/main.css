@@ -91,5 +91,6 @@ hr{
 }
 
 .thumb, .thumb canvas {
-  display:inline
+  display:inline;
+  float:left;
 }

@@ -10,6 +10,7 @@
         const DEFAULTPOSTER = "defaultposter";
         const THREADS = "xownThreadList";
         const POSTCOUNT = "postcount";
+        const ALLOWEDFILES = "sharedFiletypeList";
     }
     
     class TTHREAD {
@@ -26,9 +27,22 @@
         const USER = "user";
         const IP = "ip";
         const POSTNUMBER = "postnumber";
+        const FILES = "xownFileList";
     }
     
+    class TFILE {
+        const TABLE = "file";
+        const ORIGNAME = "origname";
+        const PATH = "path";
+        const THUMBPATH = "thumbpath";
+        const TYPE = "type";
+    }
     
+    class TFILETYPE {
+        const TABLE = "filetype";
+        const MIME = "mime";
+        const FILEENDING = "fileending";
+    }
     
     function dbExists($o){
         return (!empty($o) && $o[COMMONS::ID] > 0);

@@ -54,8 +54,18 @@ $f3->route('POST /api/post/create',
             badRequest(array());
         }
         
+        $vFiles = verifyIncommingFiles(boardByURL($form['board']));
+        //TODO don't allow duplicate files
+        $cFiles = commitUploadedFiles($vFiles, $f3->get("IMAGEDIR"));
+        
+        for($i=0;$i<sizeof($cFiles);$i++) {
+            $thumbpath = $f3->get("THUMBDIR").$cFiles[$i]['filename'];
+            createThumbnail($cFiles[$i], $thumbpath);
+            $cFiles[$i]['thumbpath'] = $thumbpath;
+        }
+                
         $threadId = $op[TTHREAD::TABLE][COMMONS::ID];
-		createPost($threadId, $form['subject'], $form['comment'], $form['user'], $ip);
+		createPost($threadId, $form['subject'], $form['comment'], $form['user'], $ip, $cFiles);
         
         restOK(array());
 	}
@@ -80,14 +90,7 @@ $f3->route('GET /api/board/thread/list/@boardURL',
             $response['threads'][$i]=array();
             $response['threads'][$i]['posts'] = array();
             foreach($posts as $post) {
-                $response['threads'][$i]['posts'][]=propertiesAsArray($post,
-                            TPOST::POSTNUMBER,
-                            TPOST::SUBJECT,
-                            TPOST::COMMENT,
-                            TPOST::USER,
-                            TPOST::TIMESTAMP,
-                            TPOST::ISOP
-                );
+                $response['threads'][$i]['posts'][]=postAsJSONable($post);
             }
             $i++;
         }
@@ -112,14 +115,7 @@ $f3->route('GET /api/thread/@boardUrl/@postNumber',
         $posts = $thread[TTHREAD::POSTS];
         $response['posts'] = array();
         foreach($posts as $post) {
-            $response['posts'][]=propertiesAsArray($post,
-                        TPOST::POSTNUMBER,
-                        TPOST::SUBJECT,
-                        TPOST::COMMENT,
-                        TPOST::USER,
-                        TPOST::TIMESTAMP,
-                        TPOST::ISOP
-            );
+            $response['posts'][]= postAsJSONable($post);
         }
         restOK($response);
 	}
@@ -161,6 +157,17 @@ $f3->route('POST /api/board/create',
         }
         
         createBoard($urlname, $name, $defaultposter);
+	}
+);
+
+$f3->route('POST /api/board/filetype',
+	function($f3) {
+        /*$file = R::dispense(TFILETYPE::TABLE);
+        $file[TFILETYPE::MIME] = "image/png";
+        $file[TFILETYPE::FILEENDING]=".png";
+		$board = R::load(TBOARD::TABLE, 1);
+        array_push($board[TBOARD::ALLOWEDFILES], $file);
+        R::store($board);*/
 	}
 );
 

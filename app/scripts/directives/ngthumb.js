@@ -15,7 +15,7 @@ angular.module('bilderbrettApp')
       },
       isImage: function(file) {
         var type =  '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        return '|jpg|png|jpeg|gif|'.indexOf(type) !== -1;
       }
     };
 
@@ -29,6 +29,7 @@ angular.module('bilderbrettApp')
 
         if (!helper.isFile(params.file)) return;
         if (!helper.isImage(params.file)) return;
+
 
         var canvas = element.find('canvas');
         var reader = new FileReader();

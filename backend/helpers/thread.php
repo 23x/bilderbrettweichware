@@ -4,6 +4,7 @@
     don't call methods prefixed with "_" if you don't know what you're doing.
     They may look simple, but they'll fuck your shit up if not properly wrapped
     in a transaction and store the right elements after calling them.
+    equally, don't mess with methods calling "_"-methods. (But feel free to call them)
     */
     
     
@@ -11,9 +12,7 @@
         R::begin();
         try {
             $board = boardByURL($boardUrl);
-            if(empty($user)){
-                $user = $board[TBOARD::DEFAULTPOSTER];
-            }
+            $user = checkSetDefaultPoster($user, $board);
             $thread = R::dispense(TTHREAD::TABLE);
             R::store($thread);
             $post = _dispensePost($board, $subject, $comment, $user, $ip);
@@ -29,15 +28,14 @@
         
     }
     
-    function createPost($threadid, $subject, $comment, $user, $ip){
+    function createPost($threadid, $subject, $comment, $user, $ip, $files){
         R::begin();
         try {
             $thread = R::load(TTHREAD::TABLE, $threadid);
             $board = $thread[TBOARD::TABLE];
-            if(empty($user)){
-                $user = $board[TBOARD::DEFAULTPOSTER];
-            }
+            $user = checkSetDefaultPoster($user, $board);
             $post = _dispensePost($board, $subject, $comment, $user, $ip);
+            $post = _appendFilesToPost($post, $files);
             R::store($post);
             array_push($thread[TTHREAD::POSTS], $post);
             R::store($thread);
@@ -47,6 +45,32 @@
             R::rollback();
         }
         
+    }
+       
+    function checkSetDefaultPoster($user, $board) {
+        if(empty($user)){
+                $user = $board[TBOARD::DEFAULTPOSTER];
+        }
+        return $user;
+    }
+    
+    function postAsJSONable($post){
+        $jsonable =  propertiesAsArray($post,
+                        TPOST::POSTNUMBER,
+                        TPOST::SUBJECT,
+                        TPOST::COMMENT,
+                        TPOST::USER,
+                        TPOST::TIMESTAMP,
+                        TPOST::ISOP
+            );
+        $jsonable['files'] = array();
+        foreach($post[TPOST::FILES] as $file) {
+             $jsonable['files'][] = propertiesAsArray($file,
+                                    TFILE::PATH,
+                                    TFILE::ORIGNAME
+                );
+        }
+        return $jsonable;
     }
     
     function postFromNumber($boardUrl, $postNumber){
@@ -61,6 +85,19 @@
             return $post;
         }
         return null;
+    }
+    
+    function _appendFilesToPost($post, $cFiles) {
+        foreach($cFiles as $file) {
+            $dbFile = R::dispense(TFILE::TABLE);
+            $dbFile[TFILE::ORIGNAME] = $file['origname'];
+            $dbFile[TFILE::PATH] = $file['filename'];
+            $dbFile[TFILE::THUMBPATH] = $file['thumbpath'];
+            $dbFile[TFILE::MIME] = $file['type'];
+            R::store($dbFile);
+            array_push($post[TPOST::FILES], $dbFile);
+        }
+        return $post;
     }
     
     function _dispensePost($board, $subject, $comment, $user, $ip) {

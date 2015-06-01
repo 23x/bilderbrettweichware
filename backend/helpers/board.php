@@ -20,4 +20,14 @@
         $board[TBOARD::DEFAULTPOSTER] = $defaultposter;
         R::store($board);
     }
+    
+    function allowedMimetypesByBoard($board){
+        $mimes = $board['sharedFiletypeList'];
+        //$mimes = $board[TBOARD::ALLOWEDFILES];
+        $r=array();
+        foreach($mimes as $mime){
+            $r[] = propertiesAsArray($mime, TFILETYPE::MIME, TFILETYPE::FILEENDING);
+        }
+        return $r;
+    }
 ?>
